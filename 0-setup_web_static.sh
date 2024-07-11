@@ -6,8 +6,6 @@ if ! dpkg-query -s nginx &>/dev/null; then
     sudo apt update
     sudo apt install nginx -y
     sudo service nginx start
-else
-    echo "Nginx already installed"
 fi
 
 # create the following folders if they don't exist
@@ -19,48 +17,32 @@ folders=("/data/"
 
 # iterate through the folders, creating them if it doesn't exist
 for folder in "${folders[@]}"; do
-    if [ ! -d "$folder" ] 
-    then
-        sudo mkdir "$folder"
-    else
-        echo "Directory $folder exists"
-    fi
+        sudo mkdir -p "$folder"
 done
 
 # create a fake html file
-sudo touch /data/web_static/releases/test/index.html
-sudo bash -c 'cat > '"/data/web_static/releases/test/index.html"' <<EOF
-<html>
-    <head>
-    </head>
-    <body>
-        Holberton School
-    </body>
-</html>
-EOF'
+echo "Holberton School" > /data/web_static/releases/test/index.html
 
 # check for symbolic link and recreate it
-sudo ln -sf  "/data/web_static/releases/test" "/data/web_static/current"
-echo "symbolic link created"
+ln -sf /data/web_static/releases/test/ /data/web_static/current
 
 # grants ownership to group and user
-sudo chown -RL ubuntu:ubuntu "/data/"
-echo "Successfully changed ownership"
+chown -RL ubuntu:ubuntu /data/
+
 
 # update nginx to serve content for hbnb_static
-sudo bash -c 'cat > '"/etc/nginx/sites-available/default"' <<EOF
-server {
+printf %s "server {
     listen 80 default_server;
     listen [::]:80 default_server;
-    add_header X-Served-By 437274-web-01;
+    add_header X-Served-By $HOSTNAME;
     root /var/www/html;
     index index.html index.htm;
 
-    location /hbnb_static/index.html {
+    location /hbnb_static {
         autoindex on;
-        alias /data/web_static/current/index.html;
+        alias /data/web_static/current;
+        index index.html index.htm;
     }
-}
-EOF'
+}" > /etc/nginx/sites-available/default
 
 sudo service nginx restart
