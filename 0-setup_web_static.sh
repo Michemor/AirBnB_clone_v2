@@ -2,19 +2,22 @@
 # sets up web servers for deployment of web_static 
 
 # checks whether nginx is installed, if not it installs it
-if ! dpkg-query -s nginx &>/dev/null; then
-    apt update
-    apt install nginx -y
-fi
-
-service nginx start
+apt update
+apt install nginx -y
 
 # create the following folders if they don't exist
 mkdir -p /data/web_static/releases/test/
 mkdir -p /data/web_static/shared/
 
 # create a fake html file
-echo "Holberton School" > /data/web_static/releases/test/index.html
+printf %s "
+<html>
+    <head>
+    </head>
+    <body>
+        Holberton School
+    </body>
+</html>" > /data/web_static/releases/test/index.html
 
 # check for symbolic link and recreate it
 ln -sf /data/web_static/releases/test/ /data/web_static/current

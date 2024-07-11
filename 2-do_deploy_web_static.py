@@ -9,6 +9,7 @@ from datetime import datetime
 env.hosts = ["34.207.62.172", "35.175.128.130"]
 env.user = "ubuntu"
 
+
 def do_pack():
     """
     generated a .tgx archive
