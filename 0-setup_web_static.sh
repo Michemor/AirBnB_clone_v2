@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # sets up web servers for deployment of web_static 
-
 # checks whether nginx is installed, if not it installs it
 sudo apt-get update
 sudo apt-get install nginx -y
@@ -10,24 +9,22 @@ mkdir -p /data/web_static/releases/test/
 mkdir -p /data/web_static/shared/
 
 # create a fake html file
-printf %s "
-<html>
+printf %s " <html>
     <head>
     </head>
     <body>
         Holberton School
     </body>
-</html>" > /data/web_static/releases/test/index.html
+</html>\n" > /data/web_static/releases/test/index.html
 
 # check for symbolic link and recreate it
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 
 # grants ownership to group and user
-chown -RL ubuntu:ubuntu /data
-
+sudo chown -R ubuntu:ubuntu /data
 
 # update nginx to serve content for hbnb_static
-printf %s " server {
+sudo printf %s " server {
     listen 80 default_server;
     listen [::]:80 default_server;
     add_header X-Served-By $HOSTNAME;
