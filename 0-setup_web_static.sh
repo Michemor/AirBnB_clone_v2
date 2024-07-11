@@ -23,7 +23,7 @@ chown -RL ubuntu:ubuntu /data/
 
 
 # update nginx to serve content for hbnb_static
-printf %s "server {
+printf %s " server {
     listen 80 default_server;
     listen [::]:80 default_server;
     add_header X-Served-By $HOSTNAME;
@@ -31,7 +31,6 @@ printf %s "server {
     index index.html index.htm;
 
     location /hbnb_static {
-        autoindex on;
         alias /data/web_static/current;
         index index.html index.htm;
     }
