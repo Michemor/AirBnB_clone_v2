@@ -5,8 +5,9 @@
 if ! dpkg-query -s nginx &>/dev/null; then
     apt update
     apt install nginx -y
-    service nginx start
 fi
+
+service nginx start
 
 # create the following folders if they don't exist
 mkdir -p /data/web_static/releases/test/
