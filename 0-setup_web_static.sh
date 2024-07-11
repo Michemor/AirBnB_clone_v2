@@ -9,13 +9,13 @@ mkdir -p /data/web_static/releases/test/
 mkdir -p /data/web_static/shared/
 
 # create a fake html file
-printf %s " <html>
+sudo echo "<html>
     <head>
     </head>
     <body>
         Holberton School
     </body>
-</html>\n" > /data/web_static/releases/test/index.html
+</html>" | sudo tee /data/web_static/releases/test/index.html > /dev/null
 
 # check for symbolic link and recreate it
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
