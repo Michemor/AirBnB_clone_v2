@@ -2,10 +2,29 @@
 """
 deploys the AirBnB clone from the local machine to the server
 """
-from fabric.api import env, put, run
-from os.path import exists, splitext, basename
+from fabric.api import env, put, run, local
+from os.path import exists, splitext, basename, isdir
+from datetime import datetime
 
 env.hosts = ["34.207.62.172", "35.175.128.130"]
+env.user = "ubuntu"
+
+def do_pack():
+    """
+    generated a .tgx archive
+    """
+    time_str = datetime.now().strftime("%Y%m%d%H%M%S")
+    file_name = "versions/web_static_" + time_str + ".tgz"
+
+    print(f"Packing web_static to {file_name}")
+    if isdir("versions") is False:
+        if local("mkdir -p versions").failed is True:
+            return None
+    if local("tar -cvzf %s web_static" % file_name).succeeded is True:
+        print(f"web_static packed: {file_name} -> {getsize(file_name)}Bytes")
+        return True
+    else:
+        return None
 
 
 def do_deploy(archive_path):
