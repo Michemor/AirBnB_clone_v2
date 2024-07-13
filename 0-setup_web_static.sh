@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 # sets up web servers for deployment of web_static 
 # checks whether nginx is installed, if not it installs it
-sudo apt-get update
-sudo apt-get install nginx -y
+
+if ! dpkg-query -s nginx > /dev/null 2>&1; then
+    sudo apt-get update
+    sudo apt-get install nginx -y
+fi
+
+sudo service nginx start
 
 # create the following folders if they don't exist
 mkdir -p /data/web_static/releases/test/
