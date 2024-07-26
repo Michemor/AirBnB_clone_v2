@@ -28,9 +28,15 @@ def c_is(text):
 @app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def python(text="is cool"):
-    """ defines a pytho endpoint """
+    """ defines a python endpoint """
     output = text.replace("_", " ")
     return (f"Python {output}")
+
+
+@app.route('/number/<int:n>', strict_slashes=False)
+def number(n):
+    """ endpoint that checks for integer """
+    return (f"{n} is a number")
 
 
 if __name__ == "__main__":
